@@ -1,0 +1,17 @@
+# Maven
+/target/
+.mvn/
+
+# IntelliJ/NetBeans/Eclipse
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
