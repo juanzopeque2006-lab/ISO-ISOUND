@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        JLabel label = new JLabel("Bienvenido a ISoundMusic", SwingConstants.CENTER);
+        JLabel label = new JLabel("Crear grupo", SwingConstants.CENTER);
         label.setFont(label.getFont().deriveFont(Font.BOLD, 18f));
         add(label, BorderLayout.CENTER);
     }
