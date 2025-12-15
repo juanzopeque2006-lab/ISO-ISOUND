@@ -13,14 +13,13 @@ mvn clean test
 mvn package
 ```
 
-## Ejecutar
+## Ejecutar (GUI)
 Tras `mvn package`, se genera `target/isoundmusic-0.1.0-SNAPSHOT.jar`.
 
 ```bash
 java -jar target/isoundmusic-0.1.0-SNAPSHOT.jar
 ```
 
-Salida esperada:
-```
-Hola ISoundMusic!
-```
+Al iniciar:
+- En consola verás: `Hola ISoundMusic!`.
+- Se abrirá una ventana `ISoundMusic` con un mensaje de bienvenida.
