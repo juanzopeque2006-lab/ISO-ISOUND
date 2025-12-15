@@ -6,7 +6,8 @@ public class App {
         javax.swing.SwingUtilities.invokeLater(() -> {
             try {
                 javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             new MainFrame().setVisible(true);
         });
     }
