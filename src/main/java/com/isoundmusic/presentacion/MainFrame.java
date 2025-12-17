@@ -34,13 +34,9 @@ public class MainFrame extends JFrame {
         JButton crearPlaylistBtn = new JButton("Crear Playlist");
         JButton seedBtn = new JButton("Generar datos de prueba");
 
-        crearGrupoBtn.addActionListener((ActionEvent e) -> {
-            new CrearGrupoFrame(this).setVisible(true);
-        });
+        crearGrupoBtn.addActionListener((ActionEvent e) -> new CrearGrupoFrame(this).setVisible(true));
 
-        crearPlaylistBtn.addActionListener((ActionEvent e) -> {
-            new CrearPlaylistFrame(this).setVisible(true);
-        });
+        crearPlaylistBtn.addActionListener((ActionEvent e) -> new CrearPlaylistFrame(this).setVisible(true));
 
         seedBtn.addActionListener((ActionEvent e) -> {
             try {

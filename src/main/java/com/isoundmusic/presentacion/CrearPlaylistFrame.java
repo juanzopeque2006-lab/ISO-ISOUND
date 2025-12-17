@@ -12,15 +12,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import com.isoundmusic.dominio.gestores.GestorMusica;
 
 public class CrearPlaylistFrame extends JFrame {
     private final JTextField nombreField;
+    private final JTable tablaPlaylists;
+    private final DefaultTableModel modelo;
 
     public CrearPlaylistFrame(Frame owner) {
         super("Crear Playlist");
-        setSize(420, 200);
+        setSize(640, 420);
         setLocationRelativeTo(owner);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(8, 8));
@@ -29,10 +34,24 @@ public class CrearPlaylistFrame extends JFrame {
         titulo.setFont(titulo.getFont().deriveFont(Font.BOLD, 18f));
         add(titulo, BorderLayout.NORTH);
 
-        JPanel center = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
-        center.add(new JLabel("Nombre:"));
+        JPanel inputs = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
+        inputs.add(new JLabel("Nombre:"));
         nombreField = new JTextField(20);
-        center.add(nombreField);
+        inputs.add(nombreField);
+        // Se elimina filtro y botón listar para simplificar la UI
+
+        modelo = new DefaultTableModel(new String[] { "ID", "Nombre" }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tablaPlaylists = new JTable(modelo);
+        JScrollPane scroll = new JScrollPane(tablaPlaylists);
+
+        JPanel center = new JPanel(new BorderLayout(6, 6));
+        center.add(inputs, BorderLayout.NORTH);
+        center.add(scroll, BorderLayout.CENTER);
         add(center, BorderLayout.CENTER);
 
         JButton crearBtn = new JButton("Crear Playlist");
@@ -44,6 +63,8 @@ public class CrearPlaylistFrame extends JFrame {
 
         crearBtn.addActionListener(e -> crearPlaylist());
         cerrarBtn.addActionListener(e -> dispose());
+
+        cargarPlaylists();
     }
 
     private void crearPlaylist() {
@@ -55,10 +76,19 @@ public class CrearPlaylistFrame extends JFrame {
         try {
             new GestorMusica().crearPlaylist(nombre);
             JOptionPane.showMessageDialog(this, "Playlist creada correctamente");
-            dispose();
+            nombreField.setText("");
+            cargarPlaylists();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al crear playlist: " + ex.getMessage(), "Error",
                     JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void cargarPlaylists() {
+        java.util.List<String[]> data = new GestorMusica().listarPlaylists(null);
+        modelo.setRowCount(0);
+        for (String[] r : data) {
+            modelo.addRow(new Object[] { r[0], r[1] });
         }
     }
 }

@@ -3,8 +3,6 @@ package com.isoundmusic.dominio.gestores;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-// UUID ya no se usa: IDs autoincrementales numéricos
-
 import com.isoundmusic.dominio.clases.Grupo;
 import com.isoundmusic.persistencia.AgenteDB;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,7 @@ public class GestorGrupo {
         String like = "%" + q + "%";
 
         try {
-            List<Object[]> rows = db.select("SELECT id, nombre FROM usuarios WHERE nombre LIKE ? ORDER BY nombre",
+            List<Object[]> rows = db.select("SELECT id, nombre FROM usuarios WHERE nombre LIKE ? ORDER BY id",
                     like);
             List<String[]> out = new ArrayList<>();
             for (Object[] r : rows) {
