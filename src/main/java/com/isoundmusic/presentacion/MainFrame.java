@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 import com.isoundmusic.persistencia.DataSeeder;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MainFrame extends JFrame {
     public MainFrame() {
         super("ISoundMusic");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(480, 320);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
