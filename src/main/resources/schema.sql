@@ -1,34 +1,35 @@
--- Esquema inicial para ISoundMusic (MySQL)
+-- Esquema simplificado para ISoundMusic (MySQL)
 
-CREATE TABLE IF NOT EXISTS amigos (
+-- Usuarios y grupos (para la funcionalidad de creación de grupos)
+CREATE TABLE IF NOT EXISTS usuarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS grupos (
-  id VARCHAR(64) PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS grupo_miembro (
-  grupo_id VARCHAR(64) NOT NULL,
-  amigo_id INT NOT NULL,
-  PRIMARY KEY (grupo_id, amigo_id),
-  CONSTRAINT fk_gm_grupo FOREIGN KEY (grupo_id) REFERENCES grupos(id) ON DELETE CASCADE,
-  CONSTRAINT fk_gm_amigo FOREIGN KEY (amigo_id) REFERENCES amigos(id) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS grupo_usuario (
+  grupo_id INT NOT NULL,
+  usuario_id INT NOT NULL,
+  PRIMARY KEY (grupo_id, usuario_id),
+  FOREIGN KEY (grupo_id) REFERENCES grupos(id) ON DELETE CASCADE,
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
+-- Playlists (sin canciones asociadas obligatorias)
 CREATE TABLE IF NOT EXISTS playlists (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  nombre VARCHAR(120) NOT NULL,
-  numero_canciones INT NOT NULL DEFAULT 0
+  nombre VARCHAR(120) NOT NULL
 );
 
--- Datos de ejemplo
-INSERT INTO amigos (nombre) VALUES
+-- Datos de ejemplo mínimos
+INSERT INTO usuarios (nombre) VALUES
   ('Ana'), ('Luis'), ('Marta'), ('Carlos'), ('Lucía')
 ON DUPLICATE KEY UPDATE nombre = VALUES(nombre);
 
-INSERT INTO playlists (nombre, numero_canciones) VALUES
-  ('Favoritas', 24), ('Workout', 35), ('Relax', 18), ('Rock Hits', 50)
-ON DUPLICATE KEY UPDATE numero_canciones = VALUES(numero_canciones);
+INSERT INTO playlists (nombre) VALUES
+  ('Favoritas'), ('Workout'), ('Relax')
+ON DUPLICATE KEY UPDATE nombre = VALUES(nombre);
