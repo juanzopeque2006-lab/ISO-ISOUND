@@ -16,6 +16,7 @@ public class GestorGrupo {
     public List<String[]> buscarAmigosPorNombre(String nombre) {
         String q = nombre == null ? "" : nombre.trim();
         String like = "%" + q + "%";
+
         try {
             List<Object[]> rows = db.select("SELECT id, nombre FROM usuarios WHERE nombre LIKE ? ORDER BY nombre",
                     like);

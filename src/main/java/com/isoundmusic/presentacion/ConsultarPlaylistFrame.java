@@ -55,12 +55,15 @@ public class ConsultarPlaylistFrame extends JFrame {
         center.add(scroll, BorderLayout.CENTER);
         add(center, BorderLayout.CENTER);
 
+        JButton nuevaBtn = new JButton("Nueva Playlist");
         JButton cerrarBtn = new JButton("Cerrar");
         JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        actions.add(nuevaBtn);
         actions.add(cerrarBtn);
         add(actions, BorderLayout.SOUTH);
 
         filtrarBtn.addActionListener(e -> cargarPlaylists());
+        nuevaBtn.addActionListener(e -> crearPlaylist());
         cerrarBtn.addActionListener(e -> dispose());
 
         cargarPlaylists();
@@ -72,6 +75,27 @@ public class ConsultarPlaylistFrame extends JFrame {
         modelo.setRowCount(0);
         for (String[] r : data) {
             modelo.addRow(new Object[] { r[0], r[1] });
+        }
+    }
+
+    private void crearPlaylist() {
+        String nombre = javax.swing.JOptionPane.showInputDialog(this, "Nombre de la playlist:",
+                "Nueva Playlist", javax.swing.JOptionPane.PLAIN_MESSAGE);
+        if (nombre == null)
+            return; // cancelado
+        nombre = nombre.trim();
+        if (nombre.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Indica un nombre", "Falta nombre",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try {
+            new GestorMusica().crearPlaylist(nombre);
+            javax.swing.JOptionPane.showMessageDialog(this, "Playlist creada correctamente");
+            cargarPlaylists();
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al crear playlist: " + ex.getMessage(), "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }
 }

@@ -27,4 +27,13 @@ public class GestorMusica {
             return new ArrayList<>();
         }
     }
+
+    public int crearPlaylist(String nombre) throws SQLException {
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre de la playlist es obligatorio");
+        }
+        int id = db.ejecutarInsertReturnId("INSERT INTO playlists(nombre) VALUES(?)", nombre.trim());
+        log.info("Playlist creada: {} (id={})", nombre, id);
+        return id;
+    }
 }

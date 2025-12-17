@@ -20,9 +20,13 @@ public class DataSeeder {
         // Eliminar tablas legacy que puedan bloquear (nombres antiguos)
         db.ejecutarUpdate("DROP TABLE IF EXISTS grupo_miembro");
         db.ejecutarUpdate("DROP TABLE IF EXISTS amigos");
-        // Eliminar las actuales para recrear con tipos correctos
+        // Borrar todas las tablas del esquema y recrear con datos de prueba
         db.ejecutarUpdate("DROP TABLE IF EXISTS grupo_usuario");
         db.ejecutarUpdate("DROP TABLE IF EXISTS grupos");
+        db.ejecutarUpdate("DROP TABLE IF EXISTS usuarios");
+        db.ejecutarUpdate("DROP TABLE IF EXISTS playlist_cancion");
+        db.ejecutarUpdate("DROP TABLE IF EXISTS canciones");
+        db.ejecutarUpdate("DROP TABLE IF EXISTS playlists");
         db.ejecutarUpdate("SET FOREIGN_KEY_CHECKS=1");
 
         // Crear tablas si no existen (IDs numéricos autoincrementales)
@@ -33,17 +37,12 @@ public class DataSeeder {
         db.ejecutarUpdate(
                 "CREATE TABLE IF NOT EXISTS grupo_usuario (grupo_id INT NOT NULL, usuario_id INT NOT NULL, PRIMARY KEY (grupo_id, usuario_id), FOREIGN KEY (grupo_id) REFERENCES grupos(id) ON DELETE CASCADE, FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE)");
         db.ejecutarUpdate(
-                "CREATE TABLE IF NOT EXISTS canciones (id INT AUTO_INCREMENT PRIMARY KEY, titulo VARCHAR(150) NOT NULL, artista VARCHAR(120) NOT NULL)");
-        db.ejecutarUpdate(
                 "CREATE TABLE IF NOT EXISTS playlists (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(120) NOT NULL)");
-        db.ejecutarUpdate(
-                "CREATE TABLE IF NOT EXISTS playlist_cancion (playlist_id INT NOT NULL, cancion_id INT NOT NULL, PRIMARY KEY (playlist_id, cancion_id), FOREIGN KEY (playlist_id) REFERENCES playlists(id) ON DELETE CASCADE, FOREIGN KEY (cancion_id) REFERENCES canciones(id) ON DELETE CASCADE)");
 
         // Limpieza usando ON DELETE CASCADE
         log.info("Borrando datos previos con cascada");
-        db.ejecutarUpdate("DELETE FROM playlists"); // cascada a playlist_cancion
+        db.ejecutarUpdate("DELETE FROM playlists");
         db.ejecutarUpdate("DELETE FROM grupos"); // cascada a grupo_usuario
-        db.ejecutarUpdate("DELETE FROM canciones");
         db.ejecutarUpdate("DELETE FROM usuarios"); // cascada a grupo_usuario
 
         // Insertar usuarios
@@ -53,35 +52,12 @@ public class DataSeeder {
             db.ejecutarUpdate("INSERT INTO usuarios(nombre) VALUES(?)", u);
         }
 
-        // Insertar canciones (20)
-        String[][] canciones = new String[][] {
-                { "Sunrise", "Aurora" }, { "Blue Sky", "Horizon" }, { "Midnight Drive", "Neon" },
-                { "Ocean Waves", "Seabreeze" }, { "Forest Walk", "Greenlight" },
-                { "City Lights", "Downtown" }, { "Firefly", "Glow" }, { "Stardust", "Cosmos" },
-                { "Heartbeat", "Pulse" }, { "Thunder Road", "Storm" },
-                { "Golden Hour", "Amber" }, { "Moonlit", "Lunar" }, { "Afterglow", "Echo" }, { "Silhouettes", "Shade" },
-                { "Daydream", "Clouds" },
-                { "Echoes", "Reflex" }, { "Cascade", "Falls" }, { "Voyager", "Nova" }, { "Serenity", "Calm" },
-                { "Rush", "Tempo" }
-        };
-        for (String[] c : canciones) {
-            db.ejecutarUpdate("INSERT INTO canciones(titulo, artista) VALUES(?, ?)", c[0], c[1]);
-        }
+        // Crear playlists vacías (sin asignar canciones)
+        insertPlaylist(db, "Favoritas");
+        insertPlaylist(db, "Workout");
+        insertPlaylist(db, "Relax");
 
-        // Playlists y asignación de canciones
-        int favId = insertPlaylist(db, "Favoritas");
-        int workoutId = insertPlaylist(db, "Workout");
-        int relaxId = insertPlaylist(db, "Relax");
-
-        // Añadir primeras 8 a Favoritas, siguientes 6 a Workout, últimas 6 a Relax
-        for (int i = 1; i <= 8; i++)
-            db.ejecutarUpdate("INSERT INTO playlist_cancion(playlist_id, cancion_id) VALUES(?, ?)", favId, i);
-        for (int i = 9; i <= 14; i++)
-            db.ejecutarUpdate("INSERT INTO playlist_cancion(playlist_id, cancion_id) VALUES(?, ?)", workoutId, i);
-        for (int i = 15; i <= 20; i++)
-            db.ejecutarUpdate("INSERT INTO playlist_cancion(playlist_id, cancion_id) VALUES(?, ?)", relaxId, i);
-
-        // No se mantiene contador; se ciñe al diagrama sin ese campo
+        // No se asignan canciones a las playlists en la creación
 
         log.info("Datos de prueba insertados");
     }

@@ -31,15 +31,15 @@ public class MainFrame extends JFrame {
 
         JPanel buttons = new JPanel(new GridLayout(3, 1, 12, 12));
         JButton crearGrupoBtn = new JButton("Crear Grupo");
-        JButton consultarPlaylistBtn = new JButton("Consultar Playlist");
-        JButton seedBtn = new JButton("Rellenar datos de prueba");
+        JButton crearPlaylistBtn = new JButton("Crear Playlist");
+        JButton seedBtn = new JButton("Generar datos de prueba");
 
         crearGrupoBtn.addActionListener((ActionEvent e) -> {
             new CrearGrupoFrame(this).setVisible(true);
         });
 
-        consultarPlaylistBtn.addActionListener((ActionEvent e) -> {
-            new ConsultarPlaylistFrame(this).setVisible(true);
+        crearPlaylistBtn.addActionListener((ActionEvent e) -> {
+            new CrearPlaylistFrame(this).setVisible(true);
         });
 
         seedBtn.addActionListener((ActionEvent e) -> {
@@ -56,7 +56,7 @@ public class MainFrame extends JFrame {
         });
 
         buttons.add(crearGrupoBtn);
-        buttons.add(consultarPlaylistBtn);
+        buttons.add(crearPlaylistBtn);
         buttons.add(seedBtn);
 
         JPanel center = new JPanel(new GridBagLayout());
