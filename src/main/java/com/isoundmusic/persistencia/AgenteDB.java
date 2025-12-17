@@ -28,7 +28,7 @@ public class AgenteDB {
         String db = System.getProperty("db.name", "isoundmusic");
         this.url = "jdbc:mysql://" + host + ":" + port + "/" + db
                 + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-        this.usuario = System.getProperty("db.user", "root");
+        this.usuario = System.getProperty("db.user", "iso");
         this.password = System.getProperty("db.pass", "Aula@2020");
     }
 
