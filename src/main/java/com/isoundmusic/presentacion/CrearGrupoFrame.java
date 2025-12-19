@@ -21,7 +21,6 @@ import javax.swing.table.DefaultTableModel;
 import com.isoundmusic.dominio.gestores.GestorGrupo;
 
 public class CrearGrupoFrame extends JFrame {
-    private final JTextField campoBusqueda;
     private final JTable tablaAmigos;
     private final DefaultTableModel modeloTabla;
     private final JTextField nombreGrupoField;
@@ -46,9 +45,7 @@ public class CrearGrupoFrame extends JFrame {
         add(header, BorderLayout.NORTH);
 
         JPanel searchPanel = new JPanel(new BorderLayout(6, 6));
-        campoBusqueda = new JTextField();
         JButton buscarBtn = new JButton("Buscar amigos");
-        searchPanel.add(campoBusqueda, BorderLayout.CENTER);
         searchPanel.add(buscarBtn, BorderLayout.EAST);
 
         modeloTabla = new DefaultTableModel(new String[] { "ID", "Nombre", "Seleccionado" }, 0) {
