@@ -70,18 +70,15 @@ public class CrearGrupoFrame extends JFrame {
         add(center, BorderLayout.CENTER);
 
         JButton crearBtn = new JButton("Crear Grupo");
-        JButton confirmarBtn = new JButton("Confirmar Lista");
         JButton cerrarBtn = new JButton("Cerrar");
-        crearBtn.setEnabled(false);
+        crearBtn.setEnabled(true);
         JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         actions.add(cerrarBtn);
-        actions.add(confirmarBtn);
         actions.add(crearBtn);
         add(actions, BorderLayout.SOUTH);
 
         // Listeners
         buscarBtn.addActionListener(e -> seleccionarAmigos());
-        confirmarBtn.addActionListener(e -> confirmarCreacion(crearBtn));
         crearBtn.addActionListener(e -> registrarGrupo());
         cerrarBtn.addActionListener(e -> dispose());
     }
@@ -125,30 +122,5 @@ public class CrearGrupoFrame extends JFrame {
         }
     }
 
-    // Confirma la lista de miembros antes de permitir la creación
-    private void confirmarCreacion(JButton crearBtn) {
-        List<String> miembros = new ArrayList<>();
-        for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-            Boolean sel = (Boolean) modeloTabla.getValueAt(i, 2);
-            if (Boolean.TRUE.equals(sel)) {
-                miembros.add((String) modeloTabla.getValueAt(i, 1));
-            }
-        }
-        if (miembros.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos un amigo antes de confirmar", "Sin miembros",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        StringBuilder sb = new StringBuilder();
-        for (String m : miembros) {
-            sb.append("- ").append(m).append("\n");
-        }
-        int resp = JOptionPane.showConfirmDialog(this, "Confirmar lista de miembros:\n" + sb.toString(),
-                "Confirmar lista",
-                JOptionPane.YES_NO_OPTION);
-        if (resp == JOptionPane.YES_OPTION) {
-            crearBtn.setEnabled(true);
-            JOptionPane.showMessageDialog(this, "Lista confirmada. Ahora puedes crear el grupo.");
-        }
-    }
+    
 }
