@@ -3,9 +3,7 @@ package com.isoundmusic;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import com.isoundmusic.presentacion.MainFrame;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

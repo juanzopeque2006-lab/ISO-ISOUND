@@ -11,6 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 public class GestorMusica {
     private final AgenteDB db = AgenteDB.getAgente();
 
+    /**
+     * Lista las playlists cuyo nombre contiene el filtro dado
+     * 
+     * @param filtroNombre
+     * @return
+     */
+
     public List<String[]> listarPlaylists(String filtroNombre) {
         String q = filtroNombre == null ? "" : filtroNombre.trim();
         String like = "%" + q + "%";
@@ -28,6 +35,13 @@ public class GestorMusica {
         }
     }
 
+    /**
+     * Crea una nueva playlist con el nombre dado
+     * 
+     * @param nombre
+     * @return
+     * @throws Exception
+     */
     public int crearPlaylist(String nombre) throws Exception {
         if (nombre == null || nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre de la playlist es obligatorio");

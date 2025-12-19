@@ -61,7 +61,7 @@ public class CrearGrupoFrame extends JFrame {
 
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 2; // Solo la columna de seleccionado es editable
+                return column == 2;
             }
         };
         tablaAmigos = new JTable(modeloTabla);

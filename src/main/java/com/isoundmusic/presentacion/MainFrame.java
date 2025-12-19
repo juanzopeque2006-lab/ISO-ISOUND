@@ -52,6 +52,7 @@ public class MainFrame extends JFrame {
             }
         });
 
+        // Añadir botones al panel
         buttons.add(crearGrupoBtn);
         buttons.add(crearPlaylistBtn);
         buttons.add(seedBtn);

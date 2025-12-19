@@ -67,6 +67,9 @@ public class CrearPlaylistFrame extends JFrame {
         cargarPlaylists();
     }
 
+    /**
+     * Crea una nueva playlist con el nombre indicado en el campo de texto
+     */
     private void crearPlaylist() {
         String nombre = nombreField.getText().trim();
         if (nombre.isEmpty()) {
@@ -84,6 +87,9 @@ public class CrearPlaylistFrame extends JFrame {
         }
     }
 
+    /**
+     * Carga las playlists desde la base de datos y las muestra en la tabla
+     */
     private void cargarPlaylists() {
         java.util.List<String[]> data = new GestorMusica().listarPlaylists(null);
         modelo.setRowCount(0);

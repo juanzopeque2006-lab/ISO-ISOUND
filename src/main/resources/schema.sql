@@ -1,6 +1,3 @@
--- Esquema simplificado para ISoundMusic (MySQL)
-
--- Usuarios y grupos (para la funcionalidad de creación de grupos)
 CREATE TABLE IF NOT EXISTS usuarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL UNIQUE
@@ -19,13 +16,11 @@ CREATE TABLE IF NOT EXISTS grupo_usuario (
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- Playlists (sin canciones asociadas obligatorias)
 CREATE TABLE IF NOT EXISTS playlists (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(120) NOT NULL
 );
 
--- Datos de ejemplo mínimos
 INSERT INTO usuarios (nombre) VALUES
   ('Ana'), ('Luis'), ('Marta'), ('Carlos'), ('Lucía')
 ON DUPLICATE KEY UPDATE nombre = VALUES(nombre);
