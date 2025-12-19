@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class GestorMusica {
-    private final AgenteDB db = AgenteDB.getInstancia();
+    private final AgenteDB db = AgenteDB.getAgente();
 
     public List<String[]> listarPlaylists(String filtroNombre) {
         String q = filtroNombre == null ? "" : filtroNombre.trim();
@@ -21,13 +21,13 @@ public class GestorMusica {
                 out.add(new String[] { String.valueOf(r[0]), String.valueOf(r[1]) });
             }
             return out;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             log.error("Error listando playlists con filtro: {}", q, e);
             return new ArrayList<>();
         }
     }
 
-    public int crearPlaylist(String nombre) throws SQLException {
+    public int crearPlaylist(String nombre) throws Exception {
         if (nombre == null || nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre de la playlist es obligatorio");
         }

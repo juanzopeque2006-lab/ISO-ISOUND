@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class GestorGrupo {
-    private final AgenteDB db = AgenteDB.getInstancia();
+    private final AgenteDB db = AgenteDB.getAgente();
 
     public List<String[]> buscarAmigosPorNombre(String nombre) {
         String q = nombre == null ? "" : nombre.trim();
@@ -23,13 +23,13 @@ public class GestorGrupo {
                 out.add(new String[] { String.valueOf(r[0]), String.valueOf(r[1]) });
             }
             return out;
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             log.error("Error buscando amigos por nombre: {}", q, e);
             return new ArrayList<>();
         }
     }
 
-    public Grupo crearGrupo(String nombre, List<String> miembros) throws SQLException {
+    public Grupo crearGrupo(String nombre, List<String> miembros) throws SQLException, ClassNotFoundException {
         if (nombre == null || nombre.isBlank())
             throw new IllegalArgumentException("Nombre requerido");
         if (miembros == null || miembros.isEmpty())
