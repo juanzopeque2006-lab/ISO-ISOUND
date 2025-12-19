@@ -89,72 +89,33 @@ public class AgenteDB {
         return res;
     }
 
-    public Vector<Object> select(String sql) throws SQLException, ClassNotFoundException {
-        /*
-         * * Metodo para realizar una busqueda o seleccion de informacion enla base de
-         * datos El método select develve un vector de vectores, donde cada uno de los
-         * vectores que contiene el vector principal representa los registros que se
-         * recuperan de la base de datos.
-         */
-        Vector<Object> vectoradevolver = new Vector<Object>();
+    public List<Object[]> select(String sql) throws SQLException, ClassNotFoundException {
+        // Selección sin parámetros, devuelve filas como arrays de objetos
         conectar();
-        Statement stmt = mBD.createStatement();
-        ResultSet res = stmt.executeQuery(sql);
-        ResultSetMetaData rsmd = res.getMetaData();
-        int numCol = rsmd.getColumnCount();
-        while (res.next()) {
-            Vector<Object> v = new Vector<Object>();
-            // nuevo
-            for (int i = 1; i <= numCol; i++) {
-                v.add(res.getObject(i));
-            }
-            vectoradevolver.add(v);
-        }
-        stmt.close();
-        return vectoradevolver;
-    }
-
-    // Métodos parametrizados utilizados por los gestores
-    public int ejecutarUpdate(String sql, Object... params) throws SQLException, ClassNotFoundException {
-        conectar();
-        try (PreparedStatement ps = mBD.prepareStatement(sql)) {
-            for (int i = 0; i < params.length; i++) {
-                ps.setObject(i + 1, params[i]);
-            }
-            log.debug("UPDATE SQL: {} | params: {}", sql, Arrays.toString(params));
-            return ps.executeUpdate();
-        } finally {
-            desconectar();
-        }
-    }
-
-    // Inserta y devuelve el ID autogenerado (columna auto_increment)
-    public int ejecutarInsertReturnId(String sql, Object... params) throws SQLException, ClassNotFoundException {
-        conectar();
-        try (PreparedStatement ps = mBD.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            for (int i = 0; i < params.length; i++) {
-                ps.setObject(i + 1, params[i]);
-            }
-            log.debug("INSERT SQL: {} | params: {}", sql, Arrays.toString(params));
-            ps.executeUpdate();
-            try (ResultSet keys = ps.getGeneratedKeys()) {
-                if (keys.next()) {
-                    return keys.getInt(1);
+        try (Statement stmt = mBD.createStatement(); ResultSet res = stmt.executeQuery(sql)) {
+            List<Object[]> out = new ArrayList<>();
+            ResultSetMetaData md = res.getMetaData();
+            int cols = md.getColumnCount();
+            while (res.next()) {
+                Object[] row = new Object[cols];
+                for (int c = 1; c <= cols; c++) {
+                    row[c - 1] = res.getObject(c);
                 }
-                return -1;
+                out.add(row);
             }
+            return out;
         } finally {
             desconectar();
         }
     }
 
     public List<Object[]> select(String sql, Object... params) throws SQLException, ClassNotFoundException {
+        // Selección parametrizada para evitar inyección y problemas de encoding
         conectar();
         try (PreparedStatement ps = mBD.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) {
                 ps.setObject(i + 1, params[i]);
             }
-            log.debug("SELECT SQL: {} | params: {}", sql, Arrays.toString(params));
             try (ResultSet rs = ps.executeQuery()) {
                 List<Object[]> out = new ArrayList<>();
                 ResultSetMetaData md = rs.getMetaData();

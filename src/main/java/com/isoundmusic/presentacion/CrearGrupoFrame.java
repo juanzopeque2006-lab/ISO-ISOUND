@@ -83,14 +83,14 @@ public class CrearGrupoFrame extends JFrame {
         add(actions, BorderLayout.SOUTH);
 
         // Listeners
-        buscarBtn.addActionListener(e -> SeleccionarAmigos());
+        buscarBtn.addActionListener(e -> seleccionarAmigos());
         confirmarBtn.addActionListener(e -> confirmarCreacion(crearBtn));
-        crearBtn.addActionListener(e -> RegistrarGrupo());
+        crearBtn.addActionListener(e -> registrarGrupo());
         cerrarBtn.addActionListener(e -> dispose());
     }
 
     // Búsqueda en gestor (stub por ahora)
-    private void SeleccionarAmigos() {
+    private void seleccionarAmigos() {
         List<String[]> resultados = new GestorGrupo().getAmigos();
         modeloTabla.setRowCount(0);
         for (String[] r : resultados) {
@@ -99,7 +99,7 @@ public class CrearGrupoFrame extends JFrame {
     }
 
     // Recoge seleccionados y delega creación al gestor
-    private void RegistrarGrupo() {
+    private void registrarGrupo() {
         String nombre = nombreGrupoField.getText().trim();
         if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Indica un nombre de grupo", "Falta nombre",
@@ -146,7 +146,8 @@ public class CrearGrupoFrame extends JFrame {
         for (String m : miembros) {
             sb.append("- ").append(m).append("\n");
         }
-        int resp = JOptionPane.showConfirmDialog(this, "Confirmar lista de miembros:\n" + sb.toString(), "Confirmar lista",
+        int resp = JOptionPane.showConfirmDialog(this, "Confirmar lista de miembros:\n" + sb.toString(),
+                "Confirmar lista",
                 JOptionPane.YES_NO_OPTION);
         if (resp == JOptionPane.YES_OPTION) {
             crearBtn.setEnabled(true);

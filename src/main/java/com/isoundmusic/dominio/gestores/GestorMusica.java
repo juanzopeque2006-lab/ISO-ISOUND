@@ -1,9 +1,10 @@
 package com.isoundmusic.dominio.gestores;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.isoundmusic.persistencia.AgenteDB;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -31,7 +32,12 @@ public class GestorMusica {
         if (nombre == null || nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre de la playlist es obligatorio");
         }
-        int id = db.ejecutarInsertReturnId("INSERT INTO playlists(nombre) VALUES(?)", nombre.trim());
+        String n = nombre.trim();
+        String esc = n.replace("'", "''");
+        // Usar métodos existentes del agente: insert(sql) y select(sql, params)
+        db.insert("INSERT INTO playlists(nombre) VALUES('" + esc + "')");
+        List<Object[]> rows = db.select("SELECT id FROM playlists WHERE nombre = ? ORDER BY id DESC LIMIT 1", n);
+        int id = rows.isEmpty() ? -1 : Integer.parseInt(String.valueOf(rows.get(0)[0]));
         log.info("Playlist creada: {} (id={})", nombre, id);
         return id;
     }
