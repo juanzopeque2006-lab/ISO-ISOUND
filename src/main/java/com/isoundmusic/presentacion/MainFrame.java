@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
-import com.isoundmusic.persistencia.DataSeeder;
+import com.isoundmusic.persistencia.GenerarBBDD;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -42,7 +42,7 @@ public class MainFrame extends JFrame {
         seedBtn.addActionListener((ActionEvent e) -> {
             try {
                 log.info("Iniciando carga de datos de prueba");
-                DataSeeder.seedDemoData();
+                GenerarBBDD.generarDatosDePrueba();
                 JOptionPane.showMessageDialog(this, "Datos de prueba cargados correctamente.");
                 log.info("Datos de prueba cargados");
             } catch (Exception ex) {

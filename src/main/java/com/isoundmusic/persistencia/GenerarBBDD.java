@@ -7,12 +7,12 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class DataSeeder {
+public class GenerarBBDD {
 
-        public DataSeeder() {
+        private GenerarBBDD() {
         }
 
-        public static void seedDemoData() throws SQLException {
+        public static void generarDatosDePrueba() throws SQLException {
                 AgenteDB db = AgenteDB.getInstancia();
 
                 // Migración: asegurar tipos correctos (desactivar FKs para drop seguro)
