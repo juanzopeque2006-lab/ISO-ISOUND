@@ -11,20 +11,17 @@ import lombok.extern.slf4j.Slf4j;
 public class GestorGrupo {
     private final AgenteDB db = AgenteDB.getAgente();
 
-    public List<String[]> buscarAmigosPorNombre(String nombre) {
-        String q = nombre == null ? "" : nombre.trim();
-        String like = "%" + q + "%";
+    public List<String[]> getAmigos() {
 
         try {
-            List<Object[]> rows = db.select("SELECT id, nombre FROM usuarios WHERE nombre LIKE ? ORDER BY id",
-                    like);
+            List<Object[]> rows = db.select("SELECT id, nombre FROM usuarios  ORDER BY id");
             List<String[]> out = new ArrayList<>();
             for (Object[] r : rows) {
                 out.add(new String[] { String.valueOf(r[0]), String.valueOf(r[1]) });
             }
             return out;
         } catch (SQLException | ClassNotFoundException e) {
-            log.error("Error buscando amigos por nombre: {}", q, e);
+            log.error("Error al obtener los amigos");
             return new ArrayList<>();
         }
     }
