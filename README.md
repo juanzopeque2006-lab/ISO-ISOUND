@@ -1,6 +1,6 @@
 # ISoundMusic
 
-Proyecto Java (Maven) mínimo.
+Proyecto Java.
 
 ## Requisitos
 - JDK 17 o superior instalado y en `PATH`.
@@ -14,10 +14,10 @@ mvn package
 ```
 
 ## Ejecutar (GUI)
-Tras `mvn package`, se genera `target/isoundmusic-0.1.0-SNAPSHOT.jar`.
+Tras `mvn package`, se genera `target/isoundmusic-1.0.1.jar`.
 
 ```bash
-java -jar target/isoundmusic-0.1.0-SNAPSHOT.jar
+java -jar target/isoundmusic-1.0.1.jar
 ```
 
 Al iniciar:
