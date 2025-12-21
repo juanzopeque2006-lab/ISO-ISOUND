@@ -4,9 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.isoundmusic</groupId>
     <artifactId>isoundmusic</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>ISoundMusic</name>
-    <description>Proyecto Java de ejemplo para ISoundMusic</description>
+    <description>Trabajo ISO: ISoundMusic
+        App para gestionar música
+    </description>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>

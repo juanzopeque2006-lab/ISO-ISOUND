@@ -12,8 +12,7 @@ public class ConstantesDB {
     public static final String USER = "ISO";
     public static final String PASS = "Aula@2020";
 
-    // Constantes utilizadas por AgenteDB
-    public static final String DBNAME = "isoundmusic"; // Nombre del esquema
+    public static final String DBNAME = "isoundmusic";
     public static final String CONNECTION_STRING = "jdbc:mysql://" + HOST + ":" + PORT + "/";
     public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 }

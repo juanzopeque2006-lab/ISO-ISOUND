@@ -58,32 +58,56 @@ public class AgenteDB {
     }
 
     // Método para realizar una insercion en la base de datos
-    public int insert(String sql) throws SQLException, Exception {
-        conectar();
-        PreparedStatement stmt = mBD.prepareStatement(sql);
-        int res = stmt.executeUpdate();
-        stmt.close();
-        desconectar();
+    public int insert(String sql) {
+
+        int res = -1;
+        try {
+            conectar();
+
+            PreparedStatement stmt = mBD.prepareStatement(sql);
+            res = stmt.executeUpdate();
+            stmt.close();
+            desconectar();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            log.error("Error en insert SQL: {}", sql, e);
+        }
+
         return res;
     }
 
     // Método para realizar una eliminacion en la base de datos
-    public int delete(String sql) throws SQLException {
-        PreparedStatement stmt = mBD.prepareStatement(sql);
-        int res = stmt.executeUpdate();
-        stmt.close();
-        desconectar();
+    public int delete(String sql) {
+        PreparedStatement stmt;
+        int res = -1;
+
+        try {
+            stmt = mBD.prepareStatement(sql);
+            res = stmt.executeUpdate();
+            stmt.close();
+            desconectar();
+
+        } catch (SQLException e) {
+            log.error("Error en delete SQL: {}", sql, e);
+        }
 
         return res;
     }
 
     // Método para realizar una eliminacion en la base de datos
-    public int update(String sql) throws SQLException, ClassNotFoundException {
-        conectar();
-        PreparedStatement stmt = mBD.prepareStatement(sql);
-        int res = stmt.executeUpdate();
-        stmt.close();
-        desconectar();
+    public int update(String sql) {
+        int res = -1;
+        try {
+
+            conectar();
+            PreparedStatement stmt = mBD.prepareStatement(sql);
+            res = stmt.executeUpdate();
+            stmt.close();
+            desconectar();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            log.error("Error en update SQL: {}", sql, e);
+        }
         return res;
     }
 
@@ -131,117 +155,4 @@ public class AgenteDB {
             desconectar();
         }
     }
-
-    /*
-     * private AgenteDB() {
-     * host = System.getProperty("db.host", ConstantesDB.HOST);
-     * port = System.getProperty("db.port", ConstantesDB.PORT);
-     * db = System.getProperty("db.name", ConstantesDB.BD);
-     * url = "jdbc:mysql://" + host + ":" + port + "/" + db
-     * + "?serverTimezone=UTC";
-     * this.usuario = System.getProperty("db.user", ConstantesDB.USER);
-     * this.password = System.getProperty("db.pass", ConstantesDB.PASS);
-     * }
-     */
-
-    /*
-     * public static synchronized AgenteDB getInstancia() {
-     * if (instancia == null) {
-     * instancia = new AgenteDB();
-     * }
-     * return instancia;
-     * }
-     * 
-     * private void conectar() throws SQLException {
-     * if (conexion == null || conexion.isClosed()) {
-     * // Asegurar que la base de datos exista antes de conectar al esquema
-     * ensureDatabaseExists();
-     * log.debug("Conectando a BBDD: {}", url);
-     * conexion = DriverManager.getConnection(url, usuario, password);
-     * log.debug("Conexión establecida");
-     * }
-     * }
-     * 
-     * private synchronized void ensureDatabaseExists() throws SQLException {
-     * if (databaseEnsured)
-     * return;
-     * String baseUrl = "jdbc:mysql://" + host + ":" + port +
-     * "/?serverTimezone=UTC";
-     * log.debug("Verificando existencia de la base de datos '{}'", db);
-     * try (Connection c = DriverManager.getConnection(baseUrl, usuario, password);
-     * Statement st = c.createStatement()) {
-     * String create = "CREATE DATABASE IF NOT EXISTS `" + db
-     * + "` DEFAULT CHARACTER SET utf8mb4";
-     * st.executeUpdate(create);
-     * log.info("Base de datos verificada/creada: {}", db);
-     * databaseEnsured = true;
-     * }
-     * }
-     * 
-     * public void desconectar() {
-     * try {
-     * if (conexion != null && !conexion.isClosed())
-     * conexion.close();
-     * } catch (SQLException ignored) {
-     * log.warn("Error cerrando conexión", ignored);
-     * }
-     * }
-     * 
-     * public int ejecutarUpdate(String sql, Object... params) throws SQLException {
-     * conectar();
-     * try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-     * for (int i = 0; i < params.length; i++)
-     * ps.setObject(i + 1, params[i]);
-     * log.debug("UPDATE SQL: {} | params: {}", sql, Arrays.toString(params));
-     * return ps.executeUpdate();
-     * } finally {
-     * desconectar();
-     * }
-     * }
-     * 
-     * // Inserta y devuelve el ID autogenerado (columna auto_increment)
-     * public int ejecutarInsertReturnId(String sql, Object... params) throws
-     * SQLException {
-     * conectar();
-     * try (PreparedStatement ps = conexion.prepareStatement(sql,
-     * Statement.RETURN_GENERATED_KEYS)) {
-     * for (int i = 0; i < params.length; i++)
-     * ps.setObject(i + 1, params[i]);
-     * log.debug("INSERT SQL: {} | params: {}", sql, Arrays.toString(params));
-     * ps.executeUpdate();
-     * try (ResultSet keys = ps.getGeneratedKeys()) {
-     * if (keys.next()) {
-     * return keys.getInt(1);
-     * }
-     * return -1;
-     * }
-     * } finally {
-     * desconectar();
-     * }
-     * }
-     * 
-     * public List<Object[]> select(String sql, Object... params) throws
-     * SQLException {
-     * conectar();
-     * try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-     * for (int i = 0; i < params.length; i++)
-     * ps.setObject(i + 1, params[i]);
-     * log.debug("SELECT SQL: {} | params: {}", sql, Arrays.toString(params));
-     * try (ResultSet rs = ps.executeQuery()) {
-     * List<Object[]> out = new ArrayList<>();
-     * ResultSetMetaData md = rs.getMetaData();
-     * int cols = md.getColumnCount();
-     * while (rs.next()) {
-     * Object[] row = new Object[cols];
-     * for (int c = 1; c <= cols; c++)
-     * row[c - 1] = rs.getObject(c);
-     * out.add(row);
-     * }
-     * return out;
-     * }
-     * } finally {
-     * desconectar();
-     * }
-     * }
-     */
 }

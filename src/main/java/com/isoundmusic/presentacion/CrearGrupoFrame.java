@@ -121,6 +121,4 @@ public class CrearGrupoFrame extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    
 }
