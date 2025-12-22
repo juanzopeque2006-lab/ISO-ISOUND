@@ -13,15 +13,10 @@ public class GenerarBBDD {
 
                 // Migración: asegurar tipos correctos (desactivar FKs para drop seguro)
                 db.update("SET FOREIGN_KEY_CHECKS=0");
-                // Eliminar tablas legacy que puedan bloquear (nombres antiguos)
-                db.update("DROP TABLE IF EXISTS grupo_miembro");
-                db.update("DROP TABLE IF EXISTS amigos");
                 // Borrar todas las tablas del esquema y recrear con datos de prueba
                 db.update("DROP TABLE IF EXISTS grupo_usuario");
                 db.update("DROP TABLE IF EXISTS grupos");
                 db.update("DROP TABLE IF EXISTS usuarios");
-                db.update("DROP TABLE IF EXISTS playlist_cancion");
-                db.update("DROP TABLE IF EXISTS canciones");
                 db.update("DROP TABLE IF EXISTS playlists");
                 db.update("SET FOREIGN_KEY_CHECKS=1");
 
